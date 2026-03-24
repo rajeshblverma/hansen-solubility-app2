@@ -3,220 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hansen Solubility App | Academic Tool</title>
+    <title>Hansen Solubility App | NIPER Research</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        :root {
-            --primary-teal: #008080;
-            --dark-blue: #002b36;
-            --text-gray: #4a5568;
-            --light-bg: #fdfbf7;
-            --nav-bg: #1a202c;
-        }
-
-        * { box-sizing: border-box; scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            background-color: white;
-            color: var(--dark-blue);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* --- ACADEMIC HEADER (Matches DruLiTo Style) --- */
-        header {
-            width: 100%;
-            background: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(to right, #f8fafc, #e2e8f0);
-            padding: 40px 0;
-            text-align: center;
-            border-bottom: 2px solid var(--primary-teal);
-        }
-
-        .header-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 0;
-            color: #1a202c;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-
-        /* --- STICKY NAVIGATION BAR --- */
-        nav {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            background: var(--nav-bg);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .nav-links li a {
-            display: block;
-            padding: 15px 25px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-            border-right: 1px solid #2d3748;
-        }
-
-        .nav-links li a:hover, .nav-links li a.active {
-            background: var(--primary-teal);
-        }
-
-        /* --- MAIN CONTENT AREA --- */
-        .container {
-            max-width: 1100px;
-            width: 90%;
-            padding: 50px 0;
-            text-align: left;
-            min-height: 80vh;
-        }
-
+        :root { --primary-teal: #008080; --dark-blue: #002b36; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: var(--dark-blue); }
+        .academic-header { background: linear-gradient(to right, #f8fafc, #cbd5e0); border-bottom: 3px solid var(--primary-teal); }
+        .nav-tab { cursor: pointer; transition: 0.3s; border-right: 1px solid #2d3748; }
+        .nav-tab:hover, .nav-tab.active { background: var(--primary-teal); color: white; }
         section { display: none; }
         section.active { display: block; }
-
-        h2 { border-bottom: 2px solid var(--primary-teal); padding-bottom: 10px; margin-bottom: 30px; }
-
-        /* --- HOME TAB STYLE --- */
-        .home-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 30px; align-items: start; }
-        .side-img { width: 100%; border-radius: 8px; }
-
-        /* --- PREDICTOR TAB (Iframe Integration) --- */
-        .iframe-container {
-            width: 100%;
-            height: 800px;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #f8fafc;
-        }
-
-        /* --- CONTACT TAB (Google Form Integration) --- */
-        .form-container {
-            width: 100%;
-            max-width: 640px;
-            margin: 0 auto;
-        }
-
-        /* --- FOOTER & DISCLAIMER --- */
-        footer {
-            width: 100%;
-            padding: 40px 5%;
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
-            font-size: 0.8rem;
-            color: var(--text-gray);
-            text-align: center;
-        }
-
-        .disclaimer {
-            color: #c53030;
-            font-weight: bold;
-            margin-top: 20px;
-            border-top: 1px solid #cbd5e0;
-            padding-top: 10px;
-        }
+        .sphere-container { min-height: 500px; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1 class="header-title">Hansen Solubility App (HSA)</h1>
+    <header class="academic-header py-8 text-center">
+        <h1 class="text-4xl font-bold text-slate-900">Hansen Solubility App (HSA)</h1>
+        <p class="text-slate-600 mt-2">Precision Solubilizer Selection for Drug Delivery</p>
     </header>
 
-    <nav>
-        <ul class="nav-links">
-            <li><a href="javascript:void(0)" class="active" onclick="showTab('home', this)">Home</a></li>
-            <li><a href="javascript:void(0)" onclick="showTab('predictor', this)">HSP Predictor</a></li>
-            <li><a href="javascript:void(0)" onclick="showTab('tutorial', this)">Tutorial</a></li>
-            <li><a href="javascript:void(0)" onclick="showTab('reference', this)">References</a></li>
-            <li><a href="javascript:void(0)" onclick="showTab('contact', this)">Contact us</a></li>
-        </ul>
+    <nav class="sticky top-0 bg-slate-900 text-white z-50 flex justify-center shadow-lg">
+        <div class="nav-tab active px-8 py-4 font-bold" onclick="showTab('home', this)">Home</div>
+        <div class="nav-tab px-8 py-4 font-bold" onclick="showTab('predictor', this)">HSP Predictor</div>
+        <div class="nav-tab px-8 py-4 font-bold" onclick="showTab('tutorial', this)">Tutorial</div>
+        <div class="nav-tab px-8 py-4 font-bold" onclick="showTab('contact', this)">Contact</div>
     </nav>
 
-    <div class="container">
-        
+    <main class="max-w-7xl mx-auto px-4 py-10">
+
         <section id="home" class="active">
-            <div class="home-grid">
-                <div><img src="https://via.placeholder.com/150" class="side-img" alt="HSP Icon"></div>
+            <div class="grid md:grid-cols-2 gap-10 items-center">
                 <div>
-                    <h2>Welcome to Hansen Solubility Modeling</h2>
-                    <p>Hansen Solubility Parameters (HSP) provide a powerful framework for predicting molecular interactions. Our tool allows for precision selection of solubilizers using advanced 3D modeling components: Dispersion (δD), Polar (δP), and Hydrogen Bonding (δH).</p>
-                    <p>This open-source virtual screening tool is designed for academic researchers to find the perfect solvent match for drugs and excipients with unprecedented accuracy[cite: 1, 19].</p>
+                    <h2 class="text-3xl font-bold border-b-4 border-teal-600 inline-block mb-6">About HSA</h2>
+                    <p class="text-lg leading-relaxed mb-4">HSA is a professional virtual screening tool designed to predict optimal solubilizers for poorly water-soluble drugs using <strong>Hansen Solubility Parameters (HSP)</strong>.</p>
+                    <p class="bg-teal-50 p-4 border-l-4 border-teal-600 italic">"Like dissolves like" — By calculating the 3D distance between drug and solvent, we maximize formulation success.</p>
                 </div>
-                <div><img src="https://via.placeholder.com/150" class="side-img" alt="3D Model"></div>
+                <div class="bg-white p-4 rounded-lg shadow-inner">
+                    <img src="https://via.placeholder.com/600x400?text=3D+Solubility+Sphere+Visualization" alt="Sphere" class="rounded">
+                </div>
             </div>
         </section>
 
         <section id="predictor">
-            <h2>HSP Predictor Tool</h2>
-            <p>Access the integrated HSP Predictor software below. Use the tool to analyze your dataset of Drugs and Excipients[cite: 6, 9].</p>
-            <div class="iframe-container">
-                <iframe src="https://aistudio.google.com/apps/drive/1jophAalhNAofe__9FwMTx8m6Z7RcTlH4?fullscreenApplet=true" 
-                        width="100%" height="100%" frameborder="0"></iframe>
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="font-bold text-xl mb-4 text-teal-700">Predictor Controls</h3>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Upload Custom Research CSV</label>
+                        <input type="file" id="csv-file" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Solubility Radius (R₀): <span id="r-val" class="text-teal-600">10.0</span></label>
+                        <input type="range" id="radius" min="1" max="25" step="0.5" value="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600">
+                    </div>
+
+                    <div id="results-list" class="mt-8">
+                        <h4 class="font-bold text-sm uppercase tracking-wider text-slate-400 mb-4">Top Matches</h4>
+                        <div class="space-y-2" id="top-matches-container">
+                            </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <div id="sphere-plot" class="sphere-container"></div>
+                    <div class="mt-4 p-4 bg-white border rounded-lg text-sm flex gap-4">
+                        <span class="flex items-center"><span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span> Target Drug</span>
+                        <span class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span> Compatible Solubilizers</span>
+                        <span class="flex items-center"><span class="w-3 h-3 bg-slate-300 rounded-full mr-2"></span> Outside Sphere</span>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section id="tutorial">
-            <h2>Tutorial & Video Guide</h2>
-            <p>Watch the screen recording below to learn how to use the HSA tool effectively[cite: 10, 11].</p>
-            <div style="background: #eee; padding: 100px; text-align: center; border-radius: 8px;">
-                [Screen Recording Placeholder]
+            <h2 class="text-3xl font-bold mb-6">Tutorial Guide</h2>
+            <div class="aspect-video bg-slate-200 rounded-xl flex items-center justify-center border-4 border-dashed border-slate-300">
+                <p class="text-slate-500 font-bold text-xl">[Screen Recording to be inserted here]</p>
+            </div>
+            
+            <div class="mt-10">
+                <h3 class="text-2xl font-bold mb-4">Academic References</h3>
+                <ul class="list-disc pl-6 space-y-2 text-slate-700">
+                    <li>van Krevelen, D. W., & Te Nijenhuis, K. (2009). Properties of Polymers, 4th Ed. Elsevier.</li>
+                    <li>HSPiP Online Database (hansen-solubility.com).</li>
+                </ul>
             </div>
         </section>
 
-        <section id="reference">
-            <h2>References</h2>
-            <ol style="line-height: 2;">
-                <li>van Krevelen, D. W., & Te Nijenhuis, K. (2009). <i>Properties of Polymers</i>, 4th Ed. Elsevier[cite: 13].</li>
-                <li>HSPiP Online Database (<a href="https://hansen-solubility.com" target="_blank">hansen-solubility.com</a>)[cite: 14].</li>
-                <li>CIMS: A User’s Handbook (Apr-July 2013), 2nd Ed, Dr. Monica Bhatia[cite: 15].</li>
-            </ol>
-        </section>
+    </main>
 
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <p>For any suggestions or queries, please use the form below[cite: 16, 17].</p>
-            <div class="form-container">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfD-example/viewform?embedded=true" 
-                        width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-            </div>
-        </section>
-
-    </div>
-
-    <footer>
-        <p>School of Pharmacy & Technology Management Shirpur</p>
-        <div class="disclaimer">
-            DISCLAIMER: This software is intended for research purposes only, not for clinical or any commercial use. It is a non-profit service to the academic and non-academic scientific community.
+    <footer class="bg-slate-100 border-t border-slate-200 py-10 px-6 text-center mt-20">
+        <p class="text-slate-600 font-bold uppercase tracking-widest text-xs">National Institute of Pharmaceutical Education and Research (NIPER)</p>
+        <div class="text-red-700 font-bold mt-4 text-sm max-w-3xl mx-auto italic">
+            DISCLAIMER: This software is intended for research purposes only. It is a non-profit service to the academic and scientific community.
         </div>
     </footer>
 
     <script>
+        // Data Types from types.ts
+        const drug = { name: "Ibuprofen", dd: 17.5, dp: 3.2, dh: 7.9 };
+        const solubilizers = [
+            { name: "Ethanol", dd: 15.8, dp: 8.8, dh: 19.4 },
+            { name: "Glycerin", dd: 17.4, dp: 12.1, dh: 29.3 },
+            { name: "Propylene Glycol", dd: 16.8, dp: 9.4, dh: 23.3 }
+        ];
+
         function showTab(tabId, el) {
-            // Hide all sections
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-            // Show target section
             document.getElementById(tabId).classList.add('active');
-            
-            // Update active link styling
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
+            if(tabId === 'predictor') renderSphere();
         }
+
+        // Logic from calculator.ts and SpherePlot.tsx
+        function calculateRa(a, b) {
+            return Math.sqrt(4 * Math.pow(a.dd - b.dd, 2) + Math.pow(a.dp - b.dp, 2) + Math.pow(a.dh - b.dh, 2));
+        }
+
+        function renderSphere() {
+            const radius = parseFloat(document.getElementById('radius').value);
+            document.getElementById('r-val').innerText = radius.toFixed(1);
+
+            // Generate Sphere Surface
+            const phi = Array.from({ length: 50 }, (_, i) => (i * Math.PI) / 25);
+            const theta = Array.from({ length: 50 }, (_, i) => (i * Math.PI) / 49);
+            const x = [], y = [], z = [];
+            for (let i = 0; i < phi.length; i++) {
+                const xr = [], yr = [], zr = [];
+                for (let j = 0; j < theta.length; j++) {
+                    xr.push(drug.dd + (radius / 2) * Math.sin(theta[j]) * Math.cos(phi[i]));
+                    yr.push(drug.dp + radius * Math.sin(theta[j]) * Math.sin(phi[i]));
+                    zr.push(drug.dh + radius * Math.cos(theta[j]));
+                }
+                x.push(xr); y.push(yr); z.push(zr);
+            }
+
+            const sphereTrace = { x, y, z, type: 'surface', opacity: 0.15, colorscale: [[0, '#008080'], [1, '#008080']], showscale: false, name: 'Solubility Sphere' };
+            const drugTrace = { x: [drug.dd], y: [drug.dp], z: [drug.dh], mode: 'markers', marker: { size: 10, color: 'red' }, type: 'scatter3d', name: drug.name };
+            
+            const layout = { 
+                scene: { xaxis: {title: 'δD'}, yaxis: {title: 'δP'}, zaxis: {title: 'δH'} },
+                margin: {l:0, r:0, b:0, t:0},
+                legend: { x: 0, y: 1 }
+            };
+
+            Plotly.newPlot('sphere-plot', [sphereTrace, drugTrace], layout);
+            updateResults(radius);
+        }
+
+        function updateResults(radius) {
+            const container = document.getElementById('top-matches-container');
+            container.innerHTML = '';
+            solubilizers.forEach(sol => {
+                const ra = calculateRa(drug, sol);
+                const isInside = ra <= radius;
+                container.innerHTML += `
+                    <div class="p-3 border rounded ${isInside ? 'bg-green-50 border-green-200' : 'bg-slate-50'} flex justify-between items-center">
+                        <div><div class="font-bold text-sm">${sol.name}</div><div class="text-xs text-slate-500">Ra: ${ra.toFixed(2)}</div></div>
+                        <span class="text-xs font-bold ${isInside ? 'text-green-600' : 'text-slate-400'}">${isInside ? 'INSIDE' : 'OUTSIDE'}</span>
+                    </div>`;
+            });
+        }
+
+        document.getElementById('radius').oninput = renderSphere;
     </script>
 </body>
 </html>
