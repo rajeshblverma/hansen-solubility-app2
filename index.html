@@ -62,7 +62,7 @@
                 <div class="card p-5">
                     <h3 class="font-bold text-teal-700 mb-4 uppercase text-xs tracking-widest">1. Select Target Drug</h3>
                     <div class="relative">
-                        <input type="text" id="drug-search" placeholder="Search 1,700+ drugs..." class="w-full p-3 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                        <input type="text" id="drug-search" placeholder="Search drugs (e.g. Ibuprofen)..." class="w-full p-3 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none">
                         <div id="search-list" class="search-results shadow-lg"></div>
                     </div>
                     <div id="selected-info" class="mt-4 p-3 bg-slate-50 rounded border hidden">
@@ -84,7 +84,6 @@
 
                 <div class="card p-5 overflow-hidden">
                     <h3 class="font-bold text-teal-700 mb-4 uppercase text-xs tracking-widest">Screening Results</h3>
-                    <div id="results-count" class="text-xs mb-3 text-slate-500 font-medium">Showing top compatible excipients...</div>
                     <div id="results-list" class="space-y-2 max-h-[400px] overflow-y-auto pr-2">
                         <p class="text-xs text-slate-400 italic text-center py-10">Search and select a drug to begin virtual screening.</p>
                     </div>
@@ -93,73 +92,46 @@
 
             <div class="lg:col-span-3 card p-2 bg-white relative">
                 <div id="main-plot" style="width:100%; height:700px;"></div>
-                <div class="absolute bottom-6 right-6 flex gap-4 bg-white/90 p-3 rounded-lg border shadow-sm text-[10px] font-bold uppercase tracking-tighter">
-                    <div class="flex items-center"><span class="w-3 h-3 bg-red-600 rounded-full mr-2"></span> Target Drug</div>
-                    <div class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span> Compatible</div>
-                    <div class="flex items-center"><span class="w-3 h-3 bg-slate-300 rounded-full mr-2"></span> Non-Compatible</div>
-                </div>
             </div>
         </div>
     </section>
 
     <section id="tutorial">
         <h2 class="text-3xl font-bold text-teal-800 mb-8 border-b-2 border-teal-600 pb-2">Application Tutorial</h2>
-        <div class="max-w-4xl mx-auto">
-            <div class="card aspect-video bg-slate-900 flex items-center justify-center text-white relative overflow-hidden">
-                <video id="tut-video" class="w-full h-full" controls>
-                    <source src="tutorial_video.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/60 pointer-events-none" id="video-placeholder">
-                    <p class="text-xl font-bold opacity-50 uppercase tracking-widest">Screen Recording Placeholder</p>
-                    <p class="text-xs opacity-40 mt-2 uppercase tracking-tighter">Insert video file in repository</p>
-                </div>
-            </div>
+        <div class="max-w-4xl mx-auto card p-10 text-center">
+            <p class="text-slate-500 italic">Insert your tutorial video or screen recording here.</p>
         </div>
     </section>
 
     <section id="reference">
         <h2 class="text-3xl font-bold text-teal-800 mb-8 border-b-2 border-teal-600 pb-2">References</h2>
         <div class="card p-8 space-y-6">
-            <div class="flex gap-4">
-                <div class="h-10 w-10 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center font-bold">1</div>
-                <p class="text-slate-700 leading-relaxed">van Krevelen, D. W., & Te Nijenhuis, K. (2009). <strong>Properties of Polymers</strong>, 4th Ed. Elsevier Science. ISBN: 9780080548197.</p>
-            </div>
-            <div class="flex gap-4 border-t pt-6">
-                <div class="h-10 w-10 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center font-bold">2</div>
-                <p class="text-slate-700 leading-relaxed"><strong>HSPiP Online Database</strong>. Hansen Solubility Parameters in Practice. Available at: <a href="https://hansen-solubility.com" class="text-teal-600 underline">hansen-solubility.com</a></p>
-            </div>
+            <p>1. van Krevelen, D. W., & Te Nijenhuis, K. (2009). <b>Properties of Polymers</b>.</p>
+            <p>2. Hansen Solubility Parameters in Practice (HSPiP).</p>
         </div>
     </section>
 </main>
 
-<footer class="bg-slate-900 text-slate-400 py-12 px-6 text-center mt-20">
-    <div class="max-w-4xl mx-auto">
-        <p class="text-[10px] font-bold uppercase tracking-[0.3em] mb-4 text-teal-500">Department of Pharmacoinformatics</p>
-        <p class="text-sm mb-6">Developed by Rajesh Verma | National Institute of Pharmaceutical Education and Research</p>
-        <div class="bg-red-500/10 border border-red-500/20 p-4 rounded text-red-500 text-xs font-bold italic leading-relaxed">
-            DISCLAIMER: This software is intended for research purposes only. It is provided as a non-profit service to the academic and scientific community.
-        </div>
-    </div>
-</footer>
-
 <script>
-    // --- 1. DATASETS (Processed from your Solub_CSV and Drug_CSV) ---
-    const solubilizers = [
-        {name:"Heptafluoropropane", dd:12, dp:4, dh:3}, {name:"Ethanol", dd:15.8, dp:8.8, dh:19.4},
-        {name:"Glycerin", dd:17.4, dp:12.1, dh:29.3}, {name:"Water", dd:15.5, dp:16, dh:42.3},
-        {name:"Acetone", dd:15.5, dp:10.4, dh:7}, {name:"Propylene Glycol", dd:16.8, dp:9.4, dh:23.3},
-        {name:"PEG 400", dd:17.9, dp:7.8, dh:10.5}, {name:"Methanol", dd:15.1, dp:12.3, dh:22.3},
-        {name:"Isopropyl Myristate", dd:16.2, dp:2.2, dh:3.9}, {name:"Oleic Acid", dd:16.5, dp:3.1, dh:4.9}
-        // ... (The browser handles the full 302 entries via memory)
+    // --- 1. DATASETS ---
+    const drugs = [
+        {name:"digoxin", dd:9, dp:6.5, dh:8},
+        {name:"alendronate", dd:12, dp:11, dh:14},
+        {name:"treprostinil", dd:13, dp:7.8, dh:18.2},
+        {name:"glucose", dd:14, dp:11, dh:15},
+        {name:"sodium bicarbonate", dd:14, dp:12, dh:13},
+        {name:"ibuprofen", dd:17.5, dp:3.2, dh:7.9},
+        {name:"naproxen", dd:19, dp:4.5, dh:8.2},
+        {name:"paclitaxel", dd:18.1, dp:9.2, dh:10.4}
     ];
 
-    const drugs = [
-        {name:"Ibuprofen", dd:17.5, dp:3.2, dh:7.9}, {name:"Digoxin", dd:9, dp:6.5, dh:8},
-        {name:"Alendronate", dd:12, dp:11, dh:14}, {name:"Naproxen", dd:19, dp:4.5, dh:8.2},
-        {name:"Indomethacin", dd:18.8, dp:6.4, dh:9.1}, {name:"Celecoxib", dd:19.2, dp:8.1, dh:5.4},
-        {name:"Paclitaxel", dd:18.1, dp:9.2, dh:10.4}, {name:"Curcumin", dd:18.4, dp:8.9, dh:12.1}
-        // ... (The browser handles the full 1,737 entries via memory)
+    const solubilizers = [
+        {name:"Heptafluoropropane (HFC)", dd:12, dp:4, dh:3},
+        {name:"Ethanol", dd:15.8, dp:8.8, dh:19.4},
+        {name:"Glycerin", dd:17.4, dp:12.1, dh:29.3},
+        {name:"Water", dd:15.5, dp:16, dh:42.3},
+        {name:"Propylene Glycol", dd:16.8, dp:9.4, dh:23.3},
+        {name:"Acetone", dd:15.5, dp:10.4, dh:7}
     ];
 
     let currentDrug = null;
@@ -170,7 +142,7 @@
         document.getElementById(id).classList.add('active');
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
         el.classList.add('active');
-        if(id === 'predictor') setTimeout(updatePlot, 200);
+        if(id === 'predictor' && currentDrug) updatePlot();
     }
 
     // --- 3. SEARCH LOGIC ---
@@ -178,136 +150,14 @@
     const searchList = document.getElementById('search-list');
 
     searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase();
-        if(query.length < 2) { searchList.style.display = 'none'; return; }
-        
-        const filtered = drugs.filter(d => d.name.toLowerCase().includes(query)).slice(0, 15);
-        searchList.innerHTML = filtered.map(d => `<div class="search-item" onclick="selectDrug('${d.name}')">${d.name}</div>`).join('');
-        searchList.style.display = 'block';
-    });
-
-    function selectDrug(name) {
-        currentDrug = drugs.find(d => d.name === name);
-        document.getElementById('curr-drug-name').innerText = currentDrug.name;
-        document.getElementById('curr-drug-hsp').innerText = `δD: ${currentDrug.dd} | δP: ${currentDrug.dp} | δH: ${currentDrug.dh}`;
-        document.getElementById('selected-info').classList.remove('hidden');
-        searchList.style.display = 'none';
-        searchInput.value = '';
-        updatePlot();
-    }
-
-    // --- 4. CALCULATION & PLOTTING ---
-    function getRa(d, s) {
-        return Math.sqrt(4 * Math.pow(d.dd - s.dd, 2) + Math.pow(d.dp - s.dp, 2) + Math.pow(d.dh - s.dh, 2));
-    }
-
-    function updatePlot() {
-        if(!currentDrug) return;
-        const rad = parseFloat(document.getElementById('r-slider').value);
-        document.getElementById('r-display').innerText = rad.toFixed(1);
-
-        // Generate Sphere Mesh
-        const phi = Array.from({length: 40}, (_, i) => (i * Math.PI) / 20);
-        const theta = Array.from({length: 40}, (_, i) => (i * Math.PI) / 39);
-        const x=[], y=[], z=[];
-        for(let i=0; i<phi.length; i++) {
-            const xr=[], yr=[], zr=[];
-            for(let j=0; j<theta.length; j++) {
-                xr.push(currentDrug.dd + (rad/2)*Math.sin(theta[j])*Math.cos(phi[i]));
-                yr.push(currentDrug.dp + rad*Math.sin(theta[j])*Math.sin(phi[i]));
-                zr.push(currentDrug.dh + rad*Math.cos(theta[j]));
-            }
-            x.push(xr); y.push(yr); z.push(zr);
-        }
-
-        // Screening
-        const inside = [], outside = [];
-        solubilizers.forEach(s => {
-            const dist = getRa(currentDrug, s);
-            if(dist <= rad) inside.push({s, dist}); else outside.push({s, dist});
-        });
-
-        const traces = [
-            { x, y, z, type: 'surface', opacity: 0.1, showscale: false, colorscale: [[0, '#008080'], [1, '#008080']], name: 'Solubility Sphere' },
-            { x: [currentDrug.dd], y: [currentDrug.dp], z: [currentDrug.dh], mode: 'markers', marker: {size: 10, color: 'red'}, type: 'scatter3d', name: 'Target Drug' },
-            { x: inside.map(i => i.s.dd), y: inside.map(i => i.s.dp), z: inside.map(i => i.s.dh), mode: 'markers', marker: {size: 5, color: '#22c55e'}, type: 'scatter3d', name: 'Compatible' },
-            { x: outside.map(o => o.s.dd), y: outside.map(o => o.s.dp), z: outside.map(o => o.s.dh), mode: 'markers', marker: {size: 3, color: '#cbd5e0'}, type: 'scatter3d', name: 'Not Compatible' }
-        ];
-
-        const layout = { 
-            scene: { xaxis:{title:'δD Dispersion'}, yaxis:{title:'δP Polar'}, zaxis:{title:'δH H-Bonding'} },
-            margin: {l:0, r:0, b:0, t:0},
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            plot_bgcolor: 'rgba(0,0,0,0)'
-        };
-        
-        Plotly.newPlot('main-plot', traces, layout);
-        renderResultsList(inside);
-    }
-
-    function renderResultsList(matches) {
-        const list = document.getElementById('results-list');
-        matches.sort((a,b) => a.dist - b.dist);
-        list.innerHTML = matches.map(m => `
-            <div class="p-3 border rounded-lg bg-teal-50 border-teal-100 flex justify-between items-center animate-in slide-in-from-left duration-300">
-                <div class="text-[11px]">
-                    <p class="font-bold text-teal-900">${m.s.name}</p>
-                    <p class="text-teal-600">Ra: ${m.dist.toFixed(2)}</p>
-                </div>
-                <span class="text-[9px] font-black bg-teal-500 text-white px-2 py-1 rounded">MATCH</span>
-            </div>
-        `).join('') || '<p class="text-xs text-slate-400 italic text-center py-10">No matches within this radius.</p>';
-    }
-
-    document.getElementById('r-slider').oninput = updatePlot;
-
-    // --- 5. INITIALIZATION ---
-    window.onload = () => {
-        // Simple home plot
-        Plotly.newPlot('home-plot', [{z: [[1, 2], [3, 4]], type: 'surface', showscale: false, colorscale: 'Viridis'}], {margin:{l:0,r:0,b:0,t:0}});
-    };
-<script>
-    // --- 1. DATA INTEGRATION ---
-    // Note: I've included a representative sample here. 
-    // For the full 1,737 drugs, the search logic below is optimized to handle them.
-    const drugs = [
-        {name:"digoxin", dd:9, dp:6.5, dh:8},
-        {name:"alendronate", dd:12, dp:11, dh:14},
-        {name:"treprostinil", dd:13, dp:7.8, dh:18.2},
-        {name:"glucose", dd:14, dp:11, dh:15},
-        {name:"sodium bicarbonate", dd:14, dp:12, dh:13},
-        {name:"ibuprofen", dd:17.5, dp:3.2, dh:7.9},
-        {name:"naproxen", dd:19, dp:4.5, dh:8.2},
-        {name:"paclitaxel", dd:18.1, dp:9.2, dh:10.4}
-        // The app will now accept the full list from your CSV
-    ];
-
-    const solubilizers = [
-        {name:"Heptafluoropropane (HFC)", dd:12, dp:4, dh:3},
-        {name:"Ethanol", dd:15.8, dp:8.8, dh:19.4},
-        {name:"Glycerin", dd:17.4, dp:12.1, dh:29.3},
-        {name:"Water", dd:15.5, dp:16, dh:42.3},
-        {name:"Propylene Glycol", dd:16.8, dp:9.4, dh:23.3}
-    ];
-
-    let currentDrug = null;
-
-    // --- 2. SEARCH & SELECTION LOGIC ---
-    const searchInput = document.getElementById('drug-search');
-    const searchList = document.getElementById('search-list');
-
-    // This makes the search bar actually work
-    searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
         searchList.innerHTML = '';
-        
         if (query.length < 2) {
             searchList.style.display = 'none';
             return;
         }
 
         const filtered = drugs.filter(d => d.name.toLowerCase().includes(query)).slice(0, 10);
-        
         if (filtered.length > 0) {
             searchList.style.display = 'block';
             filtered.forEach(d => {
@@ -324,23 +174,16 @@
 
     function selectDrug(drugObj) {
         currentDrug = drugObj;
-        
-        // Update UI Text
         document.getElementById('curr-drug-name').innerText = drugObj.name.toUpperCase();
         document.getElementById('curr-drug-hsp').innerText = `δD: ${drugObj.dd} | δP: ${drugObj.dp} | δH: ${drugObj.dh}`;
         document.getElementById('selected-info').classList.remove('hidden');
-        
-        // Reset Search
         searchList.style.display = 'none';
         searchInput.value = '';
-        
-        // Trigger Plot and Calculation
         updatePlot();
     }
 
-    // --- 3. MATH & 3D VISUALIZATION ---
+    // --- 4. CALCULATION & PLOTTING ---
     function getRa(d, s) {
-        // The Hansen Distance Formula
         return Math.sqrt(4 * Math.pow(d.dd - s.dd, 2) + Math.pow(d.dp - s.dp, 2) + Math.pow(d.dh - s.dh, 2));
     }
 
@@ -349,7 +192,6 @@
         const rad = parseFloat(document.getElementById('r-slider').value);
         document.getElementById('r-display').innerText = rad.toFixed(1);
 
-        // Filter solubilizers based on Ra distance
         const inside = [];
         const resultsList = document.getElementById('results-list');
         resultsList.innerHTML = '';
@@ -359,14 +201,18 @@
             if (distance <= rad) {
                 inside.push({ ...s, distance });
                 resultsList.innerHTML += `
-                    <div class="p-2 border rounded bg-teal-50 flex justify-between text-[11px] mb-2">
+                    <div class="p-2 border rounded bg-teal-50 flex justify-between text-[11px] mb-2 border-teal-100">
                         <span><b>${s.name}</b> (Ra: ${distance.toFixed(2)})</span>
                         <span class="text-teal-600 font-bold">MATCH</span>
                     </div>`;
             }
         });
 
-        // 3D Sphere Points
+        if(inside.length === 0) {
+            resultsList.innerHTML = '<p class="text-xs text-slate-400 italic text-center py-10">No matches found at this radius.</p>';
+        }
+
+        // Generate 3D Sphere Mesh
         const phi = Array.from({length: 30}, (_, i) => (i * Math.PI) / 15);
         const theta = Array.from({length: 30}, (_, i) => (i * Math.PI) / 29);
         const x=[], y=[], z=[];
@@ -381,23 +227,23 @@
         }
 
         const traces = [
-            { x, y, z, type: 'surface', opacity: 0.1, showscale: false, colorscale: [[0, '#008080'], [1, '#008080']], name: 'Sphere' },
-            { x: [currentDrug.dd], y: [currentDrug.dp], z: [currentDrug.dh], mode: 'markers', marker: {size: 10, color: 'red'}, type: 'scatter3d', name: 'Drug' }
+            { x, y, z, type: 'surface', opacity: 0.15, showscale: false, colorscale: [[0, '#008080'], [1, '#008080']], name: 'Solubility Sphere' },
+            { x: [currentDrug.dd], y: [currentDrug.dp], z: [currentDrug.dh], mode: 'markers', marker: {size: 10, color: 'red'}, type: 'scatter3d', name: 'Drug' },
+            { x: inside.map(i => i.dd), y: inside.map(i => i.dp), z: inside.map(i => i.dh), mode: 'markers', marker: {size: 5, color: 'green'}, type: 'scatter3d', name: 'Matches' }
         ];
 
-        Plotly.newPlot('main-plot', traces, { margin: {l:0,r:0,b:0,t:0} });
+        Plotly.newPlot('main-plot', traces, { 
+            margin: {l:0,r:0,b:0,t:0},
+            scene: { xaxis:{title:'δD'}, yaxis:{title:'δP'}, zaxis:{title:'δH'} }
+        });
     }
 
-    // Initial Event Listeners
     document.getElementById('r-slider').oninput = updatePlot;
-    
-    function showTab(id, el) {
-        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
-        if(id === 'predictor' && currentDrug) updatePlot();
-    }
+
+    window.onload = () => {
+        // Initial home plot
+        Plotly.newPlot('home-plot', [{z: [[1, 2], [3, 4]], type: 'surface', showscale: false, colorscale: 'Viridis'}], {margin:{l:0,r:0,b:0,t:0}});
+    };
 </script>
 </body>
 </html>
