@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hansen Solubility App | Academic Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-teal: #008080;
+            --dark-blue: #002b36;
+            --text-gray: #4a5568;
+            --light-bg: #fdfbf7;
+            --nav-bg: #1a202c;
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: white;
+            color: var(--dark-blue);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- ACADEMIC HEADER (Matches DruLiTo Style) --- */
+        header {
+            width: 100%;
+            background: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(to right, #f8fafc, #e2e8f0);
+            padding: 40px 0;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-teal);
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: #1a202c;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* --- STICKY NAVIGATION BAR --- */
+        nav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: var(--nav-bg);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-links li a {
+            display: block;
+            padding: 15px 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+            border-right: 1px solid #2d3748;
+        }
+
+        .nav-links li a:hover, .nav-links li a.active {
+            background: var(--primary-teal);
+        }
+
+        /* --- MAIN CONTENT AREA --- */
+        .container {
+            max-width: 1100px;
+            width: 90%;
+            padding: 50px 0;
+            text-align: left;
+            min-height: 80vh;
+        }
+
+        section { display: none; }
+        section.active { display: block; }
+
+        h2 { border-bottom: 2px solid var(--primary-teal); padding-bottom: 10px; margin-bottom: 30px; }
+
+        /* --- HOME TAB STYLE --- */
+        .home-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 30px; align-items: start; }
+        .side-img { width: 100%; border-radius: 8px; }
+
+        /* --- PREDICTOR TAB (Iframe Integration) --- */
+        .iframe-container {
+            width: 100%;
+            height: 800px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f8fafc;
+        }
+
+        /* --- CONTACT TAB (Google Form Integration) --- */
+        .form-container {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* --- FOOTER & DISCLAIMER --- */
+        footer {
+            width: 100%;
+            padding: 40px 5%;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            text-align: center;
+        }
+
+        .disclaimer {
+            color: #c53030;
+            font-weight: bold;
+            margin-top: 20px;
+            border-top: 1px solid #cbd5e0;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="header-title">Hansen Solubility App (HSA)</h1>
+    </header>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="javascript:void(0)" class="active" onclick="showTab('home', this)">Home</a></li>
+            <li><a href="javascript:void(0)" onclick="showTab('predictor', this)">HSP Predictor</a></li>
+            <li><a href="javascript:void(0)" onclick="showTab('tutorial', this)">Tutorial</a></li>
+            <li><a href="javascript:void(0)" onclick="showTab('reference', this)">References</a></li>
+            <li><a href="javascript:void(0)" onclick="showTab('contact', this)">Contact us</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        
+        <section id="home" class="active">
+            <div class="home-grid">
+                <div><img src="https://via.placeholder.com/150" class="side-img" alt="HSP Icon"></div>
+                <div>
+                    <h2>Welcome to Hansen Solubility Modeling</h2>
+                    <p>Hansen Solubility Parameters (HSP) provide a powerful framework for predicting molecular interactions. Our tool allows for precision selection of solubilizers using advanced 3D modeling components: Dispersion (δD), Polar (δP), and Hydrogen Bonding (δH).</p>
+                    <p>This open-source virtual screening tool is designed for academic researchers to find the perfect solvent match for drugs and excipients with unprecedented accuracy[cite: 1, 19].</p>
+                </div>
+                <div><img src="https://via.placeholder.com/150" class="side-img" alt="3D Model"></div>
+            </div>
+        </section>
+
+        <section id="predictor">
+            <h2>HSP Predictor Tool</h2>
+            <p>Access the integrated HSP Predictor software below. Use the tool to analyze your dataset of Drugs and Excipients[cite: 6, 9].</p>
+            <div class="iframe-container">
+                <iframe src="https://aistudio.google.com/apps/drive/1jophAalhNAofe__9FwMTx8m6Z7RcTlH4?fullscreenApplet=true" 
+                        width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+        </section>
+
+        <section id="tutorial">
+            <h2>Tutorial & Video Guide</h2>
+            <p>Watch the screen recording below to learn how to use the HSA tool effectively[cite: 10, 11].</p>
+            <div style="background: #eee; padding: 100px; text-align: center; border-radius: 8px;">
+                [Screen Recording Placeholder]
+            </div>
+        </section>
+
+        <section id="reference">
+            <h2>References</h2>
+            <ol style="line-height: 2;">
+                <li>van Krevelen, D. W., & Te Nijenhuis, K. (2009). <i>Properties of Polymers</i>, 4th Ed. Elsevier[cite: 13].</li>
+                <li>HSPiP Online Database (<a href="https://hansen-solubility.com" target="_blank">hansen-solubility.com</a>)[cite: 14].</li>
+                <li>CIMS: A User’s Handbook (Apr-July 2013), 2nd Ed, Dr. Monica Bhatia[cite: 15].</li>
+            </ol>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <p>For any suggestions or queries, please use the form below[cite: 16, 17].</p>
+            <div class="form-container">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfD-example/viewform?embedded=true" 
+                        width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Department of Pharmacoinformatics, National Institute of Pharmaceutical Education and Research (NIPER).</p>
+        <div class="disclaimer">
+            DISCLAIMER: This software is intended for research purposes only, not for clinical or any commercial use. It is a non-profit service to the academic and non-academic scientific community.
+        </div>
+    </footer>
+
+    <script>
+        function showTab(tabId, el) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            // Show target section
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update active link styling
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            el.classList.add('active');
+        }
+    </script>
+</body>
+</html>
